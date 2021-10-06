@@ -18,7 +18,7 @@
         <div class='iteminfo'>
           <div>
             <h4>{{menuitem.item}}</h4>
-            h3
+          
             <p>{{priceFormatting(menuitem.price)}}</p>
           </div>
           <button class='ghost'>View Item</button>

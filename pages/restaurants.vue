@@ -1,29 +1,15 @@
 <template>
-  <div>
-<h1>Hello from restaurants page</h1>
-<div v-for='restaurant in fooddata' :key='restaurant.id'>
-  <h2>{{restaurant.name}}</h2>
-  <p>{{restaurant.deliveryTime}}</p>
-  <p>{{priceFormatting(restaurant.menu[0].price)}}</p>
-</div>
-  </div>
+  <main class='container restaurant'>
+    <h1>Restaurants</h1>
+    <AppRestaurantInfo />
+  </main>
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import AppRestaurantInfo from "../components/AppRestaurantInfo.vue";
 export default {
-  computed: {
-    ...mapState(["fooddata"])
-  },
-  methods: {
-    priceFormatting(item) {
-      return '$' + item.toFixed(2)
-    }
-    
+  components: {
+    AppRestaurantInfo
   }
-}
+};
 </script>
-
-<style lang="scss" scoped>
-
-</style>
