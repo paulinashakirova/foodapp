@@ -1,44 +1,80 @@
 <template>
-  <div>
-    <div class="container">
-      <section
-        class="image"
-        :style="
-          `background: url('/${currentItem.img}')  center center no-repeat`
-        "
-      ></section>
+  <main class="container">
+    <!-- <pre>{{ currentItem }}</pre> -->
+    <section
+      class="image"
+      :style="`background: url('/${currentItem.img}')  center center no-repeat`"
+    ></section>
 
-      <section class="details">
-        <h1>{{ currentItem.item }}</h1>
-        <h3>{{ `Price: $${currentItem.price}` }}</h3>
-        <div>
-          <input v-model="quantity" type="number" min="1" />
-          <button class="primary">Add to cart - $ {{ calcTotal }}</button>
+    <section class="details">
+      <h1>{{ currentItem.item }}</h1>
+      <h3>Price: ${{ currentItem.price.toFixed(2) }}</h3>
+
+      <div class="quantity">
+        <input v-model="count" type="number" min="1" />
+        <button @click="addToCart" class="primary">
+          Add to cart - $ {{ combinedPrice }}
+        </button>
+      </div>
+      <fieldset v-if="currentItem.options">
+        <legend>
+          <h3>Options</h3>
+        </legend>
+        <div v-for="option in currentItem.options" :key="option">
+          <input
+            type="radio"
+            name="option"
+            :id="option"
+            :value="option"
+            v-model="itemOptions"
+          />
+          <label for="option">{{ option }}</label>
         </div>
-        <fieldset>
-          <legend>Add Ons</legend>
-          <div v-for="addOn in currentItem.addOns" :key="addOn">
-            <input type="checkbox" />
-            <label>{{ addOn }}</label>
-          </div>
-        </fieldset>
-      </section>
-      <section class="options">
-        <h3>Description</h3>
-        <p>{{ currentItem.description }}</p>
-      </section>
-    </div>
-  </div>
+      </fieldset>
+      <fieldset>
+        <legend>
+          <h3>Add Ons</h3>
+        </legend>
+        <div v-for="addon in currentItem.addOns" :key="addon">
+          <input
+            type="checkbox"
+            name="addon"
+            :id="addon"
+            :value="addon"
+            v-model="itemAddons"
+          />
+          <label for="addon">{{ addon }}</label>
+        </div>
+      </fieldset>
+      <AppToast v-if="cartSubmitted"
+        >Order submitted <br />
+        Check out more
+        <nuxt-link to="/restaurants">restaurants!</nuxt-link></AppToast
+      >
+    </section>
+    <section class="options">
+      <h3>Description</h3>
+      <p>{{ currentItem.description }}</p>
+    </section>
+  </main>
 </template>
 
 <script>
+import AppToast from "@/components/AppToast.vue";
 import { mapState } from "vuex";
 export default {
+  components: {
+    AppToast
+  },
   data() {
     return {
       id: this.$route.params.id,
       price: this.$route.params.price,
-      quantity: null
+      count: 0,
+      itemOptions: "",
+      itemAddons: [],
+      itemSizeAndCost: [],
+      cartSubmitted: false
     };
   },
   computed: {
@@ -55,8 +91,20 @@ export default {
       }
       return result;
     },
-    calcTotal() {
-      return this.currentItem.price * this.quantity;
+    combinedPrice() {
+      return this.currentItem.price * this.count;
+    }
+  },
+  methods: {
+    addToCart() {
+      let formOutput = {
+        item: this.currentItem.item,
+        count: this.count,
+        options: this.itemOptions,
+        addons: this.itemAddons,
+        combinedPrice: this.combinedPrice
+      }
+      this.cartSubmitted = true;
     }
   }
 };
@@ -72,5 +120,16 @@ export default {
   grid-column-gap: 60px;
   grid-row-gap: 60px;
   line-height: 2;
+}
+.image {
+  grid-area: 1 / 1 / 2 / 2;
+  background-size: cover;
+}
+.details {
+  grid-area: 1/2/2/3;
+  position: relative;
+}
+.options {
+  grid-area: 2/1/3/2;
 }
 </style>
