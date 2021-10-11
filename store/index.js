@@ -1,29 +1,38 @@
+import { v4 as uuidv4 } from "uuid";
+
 export const state = () => ({
+  cart: [],
   fooddata: []
 });
 
-// export const getters = {
-//   getterValue: state => {
-//     return state.value
-//   }
-// }
-//mutations are the only thing that can change the state
-//they are only syncrinous
+export const getters = {
+  totalAmount: state => {
+    if (!state.cart.length) return 0;
+    return state.cart.reduce((ac, next) => ac + +next.count, 0);
+  },
+  totalPrice: state => {
+    if (!state.cart.length) return 0;
+    return state.cart.reduce((ac, next) => ac + +next.combinedPrice, 0);
+  }
+};
+
 export const mutations = {
+  addToCart: (state, formOutput) => {
+    formOutput.id = uuidv4();
+    state.cart.push(formOutput);
+  },
   updateFoodData: (state, data) => {
     state.fooddata = data;
   }
 };
-//actions can't change the state, but they can commit mutations that can change the state
-//actions are asyncrinous
+
 export const actions = {
   async getFoodData({ state, commit }) {
-    if (state.fooddata.length) {
-      return;
-    }
+    if (state.fooddata.length) return;
+
     try {
       await fetch(
-        "https:dva9vm8f1h.execute-api.us-east-2.amazonaws.com/production/restaurants",
+        "https://dva9vm8f1h.execute-api.us-east-2.amazonaws.com/production/restaurants",
         {
           headers: {
             "Content-Type": "application/json",
@@ -32,7 +41,6 @@ export const actions = {
         }
       )
         .then(response => response.json())
-
         .then(data => {
           commit("updateFoodData", data);
         });
@@ -41,4 +49,3 @@ export const actions = {
     }
   }
 };
-//https://dva9vm8f1h.execute-api.us-east-2.amazonaws.com/production/restaurants

@@ -11,8 +11,13 @@
   "dependencies": {
     "@babel/cli": "^7.15.7",
     "@babel/core": "^7.15.5",
+    "@vue/composition-api": "^1.2.4",
+    "@vuelidate/core": "^2.0.0-alpha.27",
+    "@vuelidate/validators": "^2.0.0-alpha.23",
     "core-js": "^3.15.1",
     "nuxt": "^2.15.7",
+    "uuid": "^8.3.2",
+    "vuelidate": "^0.7.6",
     "webpack": "^4.46.0"
   },
   "devDependencies": {
