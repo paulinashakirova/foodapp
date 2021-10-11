@@ -28,7 +28,8 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     `~/plugins/getfood.server.js`,
-    `~/plugins/vuelidate.js`
+    `~/plugins/vuelidate.js`,
+    `~/plugins/composition-api.js`
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
