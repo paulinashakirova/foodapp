@@ -5,7 +5,7 @@
         <nuxt-link to="/"><AppLogo /></nuxt-link>
       </li>
       <li><nuxt-link to="/restaurants">Restaurants</nuxt-link></li>
-      <li><nuxt-link to="/api">API</nuxt-link></li>
+      
     </ul>
     <div class="smallnum" v-if='totalAmount > 0'>
       {{ totalAmount }}

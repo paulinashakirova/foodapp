@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <p>All right reserved</p>
+    <p>Project done by Paulina Shakirova (inspired by Sarah Drasner)</p>
   </footer>
 </template>
 
